@@ -1,0 +1,60 @@
+{
+  "dataset": "CricPose360",
+  "version": "1.0",
+  "sequences": [
+    {
+      "sequence_id": "cp360_seq_001",
+      "camera_view": "front_pitch_30deg",
+      "action_type": "straight_drive",
+      "split": "TRAIN",
+      "duration_sec": 2.5,
+      "fps": 60.0,
+      "frame_count": 150,
+      "joint_names": [
+        "nose", "left_eye", "right_eye", "left_ear", "right_ear",
+        "left_shoulder", "right_shoulder", "left_elbow", "right_elbow",
+        "left_wrist", "right_wrist", "left_hip", "right_hip",
+        "left_knee", "right_knee", "left_ankle", "right_ankle"
+      ],
+      "keypoints_2d": [
+        [640, 210, 0.98], [630, 200, 0.95], [650, 200, 0.95], [620, 205, 0.92], [660, 205, 0.92],
+        [600, 290, 0.96], [680, 290, 0.96], [580, 390, 0.93], [700, 385, 0.94],
+        [570, 480, 0.91], [680, 470, 0.90], [610, 520, 0.95], [660, 520, 0.95],
+        [590, 680, 0.94], [670, 675, 0.93], [580, 840, 0.92], [680, 835, 0.91]
+      ],
+      "joint_angles": {
+        "lead_knee_flexion": 142.5,
+        "elbow_elevation": 72.0,
+        "spine_lateral_tilt": 8.4
+      },
+      "confidence": 0.96
+    },
+    {
+      "sequence_id": "cp360_seq_002",
+      "camera_view": "side_on_square_leg",
+      "action_type": "fast_bowling_delivery",
+      "split": "VAL",
+      "duration_sec": 3.0,
+      "fps": 60.0,
+      "frame_count": 180,
+      "joint_names": [
+        "nose", "left_eye", "right_eye", "left_ear", "right_ear",
+        "left_shoulder", "right_shoulder", "left_elbow", "right_elbow",
+        "left_wrist", "right_wrist", "left_hip", "right_hip",
+        "left_knee", "right_knee", "left_ankle", "right_ankle"
+      ],
+      "keypoints_2d": [
+        [500, 220, 0.97], [490, 210, 0.95], [510, 210, 0.95], [480, 215, 0.91], [520, 215, 0.91],
+        [470, 300, 0.95], [540, 300, 0.95], [440, 390, 0.93], [580, 230, 0.92],
+        [420, 470, 0.90], [610, 160, 0.89], [480, 510, 0.94], [530, 510, 0.94],
+        [460, 670, 0.92], [550, 660, 0.91], [450, 820, 0.90], [560, 810, 0.89]
+      ],
+      "joint_angles": {
+        "lead_knee_brace": 168.0,
+        "bowling_elbow_extension": 11.2,
+        "shoulder_counter_rotation": 28.5
+      },
+      "confidence": 0.94
+    }
+  ]
+}

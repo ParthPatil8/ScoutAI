@@ -1,0 +1,39 @@
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.Python
+env/
+venv/
+ENV/
+.venv
+
+# ScoutAI Local Artifacts
+scoutai.db
+scoutai_test.db
+storage/videos/*
+storage/frames/*
+storage/keypoints/*
+!storage/videos/.gitkeep
+!storage/frames/.gitkeep
+!storage/keypoints/.gitkeep
+
+# Environment variables & secrets
+.env
+*.env.local
+
+# Testing and coverage
+.pytest_cache/
+.coverage
+htmlcov/
+
+# IDE
+.vscode/
+.idea/
+*.swp
+*.swo
+
+# OS
+Thumbs.db
+.DS_Store

@@ -1,0 +1,11 @@
+video_id,clip_path,shot_label,split,duration,fps,resolution
+cs10_001,clips/cs10_001.mp4,drive,TRAIN,2.5,30,1280x720
+cs10_002,clips/cs10_002.mp4,pull,TRAIN,2.1,30,1280x720
+cs10_003,clips/cs10_003.mp4,cut,TRAIN,1.9,30,1280x720
+cs10_004,clips/cs10_004.mp4,sweep,VAL,2.3,30,1280x720
+cs10_005,clips/cs10_005.mp4,defense,TEST,2.0,30,1280x720
+cs10_006,clips/cs10_006.mp4,leg_glance,TRAIN,2.2,30,1280x720
+cs10_007,clips/cs10_007.mp4,flick,TRAIN,2.4,30,1280x720
+cs10_008,clips/cs10_008.mp4,scoop,VAL,2.6,30,1280x720
+cs10_009,clips/cs10_009.mp4,hook,TRAIN,2.2,30,1280x720
+cs10_010,clips/cs10_010.mp4,lofted,TEST,2.8,30,1280x720

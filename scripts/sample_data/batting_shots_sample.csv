@@ -1,0 +1,6 @@
+clip_id,match_id,batsman_name,bowler_name,shot_type,outcome,start_time_sec,end_time_sec,video_filename
+ipl_clip_101,ipl_2023_m14,Virat Kohli,Rashid Khan,cover_drive,four,12.0,16.5,match14_over8_ball3.mp4
+ipl_clip_102,ipl_2023_m14,Rohit Sharma,Mitchell Starc,pull_shot,six,24.5,29.0,match14_over2_ball5.mp4
+ipl_clip_103,ipl_2023_m18,KL Rahul,Jasprit Bumrah,forward_defense,dot,45.0,49.0,match18_over5_ball1.mp4
+ipl_clip_104,ipl_2023_m22,Suryakumar Yadav,Trent Boult,ramp_scoop,six,60.2,64.8,match22_over19_ball4.mp4
+ipl_clip_105,ipl_2023_m25,Rishabh Pant,Pat Cummins,flick_shot,four,33.0,37.5,match25_over11_ball2.mp4

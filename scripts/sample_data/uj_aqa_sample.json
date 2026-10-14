@@ -1,0 +1,64 @@
+{
+  "dataset": "UJ-AQA-CricketVision",
+  "version": "1.0",
+  "samples": [
+    {
+      "sample_id": "uj_aqa_001",
+      "video_path": "videos/uj_aqa_001.mp4",
+      "action_class": "cover_drive",
+      "split": "TRAIN",
+      "duration_sec": 3.2,
+      "fps": 30.0,
+      "resolution": "1920x1080",
+      "aqa_score": 86.5,
+      "temporal_phases": {
+        "backlift_start": 12,
+        "stride_plant": 26,
+        "impact_frame": 38,
+        "follow_through_end": 64
+      },
+      "technical_errors": [
+        "slight_head_drift_lateral"
+      ],
+      "confidence": 0.94
+    },
+    {
+      "sample_id": "uj_aqa_002",
+      "video_path": "videos/uj_aqa_002.mp4",
+      "action_class": "pull_shot",
+      "split": "TRAIN",
+      "duration_sec": 2.8,
+      "fps": 30.0,
+      "resolution": "1920x1080",
+      "aqa_score": 78.0,
+      "temporal_phases": {
+        "backlift_start": 8,
+        "weight_back": 18,
+        "impact_frame": 30,
+        "follow_through_end": 52
+      },
+      "technical_errors": [
+        "premature_wrist_roll"
+      ],
+      "confidence": 0.91
+    },
+    {
+      "sample_id": "uj_aqa_003",
+      "video_path": "videos/uj_aqa_003.mp4",
+      "action_class": "forward_defense",
+      "split": "TEST",
+      "duration_sec": 2.5,
+      "fps": 30.0,
+      "resolution": "1920x1080",
+      "aqa_score": 92.0,
+      "temporal_phases": {
+        "backlift_start": 10,
+        "stride_plant": 22,
+        "impact_frame": 32,
+        "follow_through_end": 45
+      },
+      "technical_errors": [],
+      "confidence": 0.98
+    }
+  ]
+}
