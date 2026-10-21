@@ -34,6 +34,11 @@ htmlcov/
 *.swp
 *.swo
 
+# Frontend
+frontend/node_modules/
+frontend/dist/
+frontend/.turbo/
+
 # OS
 Thumbs.db
 .DS_Store
