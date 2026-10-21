@@ -1,39 +1,36 @@
-# ScoutAI — AI-Powered Cricket Talent Scouting & Assessment Backend
+# ScoutAI — AI-Powered Cricket Talent Scouting & Biomechanics Platform
 
-ScoutAI is an AI/ML-driven computer vision and biomechanical analysis backend designed to assist cricket talent scouts, coaches, and academies. It automates technical stroke assessment, action legality monitoring, movement kinematics, cohort benchmarking, and scouting evaluation management.
+ScoutAI is an end-to-end full-stack AI platform designed to assist cricket talent scouts, coaches, and academies. It pairs a **modern telemetry-styled React + TypeScript frontend** with a **FastAPI computer vision and biomechanical analysis backend**, automating technical stroke assessment, action legality monitoring, movement kinematics, cohort benchmarking, and scouting evaluation management.
 
 ---
 
-## 1. System Architecture & Rationale
+## 1. System Architecture & Full-Stack Overview
 
-ScoutAI connects computer vision pose estimation, cricket action recognition, biomechanical feature extraction, performance metric generation, and relational database persistence into a modular pipeline.
+ScoutAI connects computer vision pose estimation, cricket action recognition, biomechanical feature extraction, performance metric generation, relational database persistence, and an athletic performance web UI into a unified system.
 
 ```
-[Video / Dataset Source]
-          │
-          ▼
-   [Validation & Storage]  --> MediaAsset & ClipSegment
-          │
-          ▼
-[Skeletal Pose Estimation] --> OpenCV Kinematics / 2D/3D COCO-17 Keypoints
-          │
-          ▼
-[Cricket Action Recognition]--> Temporal phase segmentation (Stance, Backlift, Impact, Follow-through)
-          │
-          ▼
-[Biomechanical Extraction] --> Vector joint angles, stride ratio, head alignment, elbow extension
-          │
-          ▼
-  [Metric Generation]      --> Standardized metrics (deg, ratio, ms) with confidence & origins
-          │
-          ▼
-[Provisional Technique]    --> Interpretable composite score (0 - 100)
-          │
-          ▼
- [Database Persistence]    --> PostgreSQL / SQLite Relational Schema
-          │
-          ▼
-    [REST API Layer]       --> FastAPI with OpenAPI/Swagger documentation
+[Web Application (Vite + React + TS + Tailwind)]
+                      │
+                      ▼ (REST API / JSON)
+        [FastAPI Backend Layer]
+                      │
+                      ▼
+[Video / Dataset Source] ──> [Validation & Storage] ──> MediaAsset & ClipSegment
+                                      │
+                                      ▼
+                      [Skeletal Pose Estimation] ──> OpenCV / MediaPipe COCO-17
+                                      │
+                                      ▼
+                      [Cricket Action Recognition] ──> Temporal Phase Segmentation
+                                      │
+                                      ▼
+                      [Biomechanical Extraction] ──> Vector Angles & Ratios
+                                      │
+                                      ▼
+                      [Metric Generation & Scoring] ──> Provisional Scores
+                                      │
+                                      ▼
+                      [Database Persistence] ──> PostgreSQL / SQLite
 ```
 
 ### Engineering Principles
@@ -48,13 +45,23 @@ ScoutAI connects computer vision pose estimation, cricket action recognition, bi
 
 ```
 d:\ScoutAI\
-├── .env.example                 # Environment configuration template
-├── .env                         # Local configuration
-├── .gitignore                   # Ignore rules for DB, uploaded videos, Python caches
-├── README.md                    # System documentation
-├── requirements.txt             # Locked Python dependencies
-├── pytest.ini                   # Pytest configuration
-├── scoutai/
+├── frontend/                    # Modern React 19 + TypeScript + Tailwind UI
+│   ├── src/
+│   │   ├── assets/              # Official ScoutAI logo & branding assets
+│   │   ├── components/          # 7 Screen Workspaces & Telemetry Widgets
+│   │   │   ├── dashboard/       # Command Center & Technique Radar
+│   │   │   ├── players/         # Talent Roster & Player Registration
+│   │   │   ├── profile/         # Biomechanical Dossier & Progression Chart
+│   │   │   ├── assessment/      # 3-Stage AI Assessment Pipeline
+│   │   │   ├── compare/         # Head-to-Head Differential Matrix
+│   │   │   ├── scouting/        # Scout Watchlist & Log Evaluation Modal
+│   │   │   └── datasets/        # Dataset Ingestion & Model Registry
+│   │   ├── context/             # AppContext & State Management
+│   │   ├── services/            # ApiService & Realistic Demo Fallbacks
+│   │   └── types/               # TypeScript domain interfaces
+│   ├── package.json
+│   └── vite.config.ts
+├── scoutai/                     # FastAPI Backend & Kinematics Engine
 │   ├── config.py                # Pydantic Settings (DB URLs, storage paths)
 │   ├── database.py              # SQLAlchemy engine, session maker, dialect handling
 │   ├── models/                  # SQLAlchemy ORM Models
@@ -194,6 +201,15 @@ Interactive API documentation will be available at:
 - **Swagger UI**: [http://localhost:8000/docs](http://localhost:8000/docs)
 - **ReDoc**: [http://localhost:8000/redoc](http://localhost:8000/redoc)
 - **Health Check**: [http://localhost:8000/health](http://localhost:8000/health)
+
+### Step 7: Launch the Frontend Web Application
+In a new terminal window:
+```bash
+cd frontend
+npm install
+npm run dev
+```
+The ScoutAI Telemetry Hub will launch at **[http://localhost:5173](http://localhost:5173)**. It will automatically detect the FastAPI backend or run in standalone demo mode if the backend is offline.
 
 ---
 
