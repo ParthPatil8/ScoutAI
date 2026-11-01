@@ -1,0 +1,13 @@
+services:
+  - type: web
+    name: scoutai-backend
+    runtime: python
+    buildCommand: pip install -r requirements.txt && python scripts/init_db.py && python scripts/seed_data.py
+    startCommand: uvicorn scoutai.main:app --host 0.0.0.0 --port $PORT
+    envVars:
+      - key: PYTHON_VERSION
+        value: 3.11.9
+      - key: ENVIRONMENT
+        value: production
+      - key: DEBUG
+        value: false
