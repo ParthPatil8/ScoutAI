@@ -203,24 +203,72 @@ export class ApiService {
     return { assessment: a, isLive: false };
   }
 
+  // MEDIA UPLOAD
+  static async uploadVideo(file: File): Promise<{ media: any; isLive: boolean }> {
+    if (!this.forceDemoMode) {
+      try {
+        const formData = new FormData();
+        formData.append('file', file);
+        formData.append('is_synthetic', 'false');
+
+        const res = await fetch(`${API_V1}/media/upload`, {
+          method: 'POST',
+          body: formData,
+          signal: AbortSignal.timeout(30000), // 30s for video upload
+        });
+
+        if (res.ok) {
+          const media = await res.json();
+          return { media, isLive: true };
+        }
+      } catch (err) {
+        console.warn('Backend video upload failed, falling back:', err);
+      }
+    }
+
+    return {
+      media: {
+        id: `media-${Date.now()}`,
+        original_filename: file.name,
+        file_size_bytes: file.size,
+        mime_type: file.type || 'video/mp4',
+        duration_sec: 2.5,
+        fps: 30.0,
+      },
+      isLive: false,
+    };
+  }
+
   static async createAndProcessAssessment(
     playerId: string,
     sessionName: string,
-    assessmentType: string
+    assessmentType: string,
+    videoFile?: File | null
   ): Promise<{ assessment: AssessmentSession; isLive: boolean }> {
+    let mediaAssetId: string | null = null;
+
     if (!this.forceDemoMode) {
       try {
+        // Step 0: Upload video file if provided
+        if (videoFile) {
+          const uploadRes = await this.uploadVideo(videoFile);
+          if (uploadRes.media?.id && uploadRes.isLive) {
+            mediaAssetId = uploadRes.media.id;
+          }
+        }
+
         // Step 1: Create session
         const createRes = await fetch(`${API_V1}/assessments`, {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
           body: JSON.stringify({
             player_id: playerId,
+            media_asset_id: mediaAssetId,
             session_name: sessionName,
             assessment_type: assessmentType,
             is_synthetic: true
           }),
-          signal: AbortSignal.timeout(4000)
+          signal: AbortSignal.timeout(5000)
         });
 
         if (createRes.ok) {

@@ -77,7 +77,8 @@ export const AssessmentWorkspace: React.FC = () => {
       const { assessment, isLive } = await ApiService.createAndProcessAssessment(
         targetPlayerId,
         sessionName,
-        assessmentType
+        assessmentType,
+        uploadedFile
       );
 
       clearInterval(interval);
