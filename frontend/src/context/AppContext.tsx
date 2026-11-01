@@ -1,5 +1,6 @@
 import React, { createContext, useContext, useState, useEffect } from 'react';
 import { ApiService, BackendStatus } from '../services/api';
+import { AuthUser, UserRole } from '../types';
 
 export type ScreenTab = 
   | 'dashboard'
@@ -8,7 +9,11 @@ export type ScreenTab =
   | 'assessment'
   | 'compare'
   | 'scouting'
-  | 'datasets';
+  | 'datasets'
+  | 'player-portal'
+  | 'player-technique'
+  | 'player-upload'
+  | 'player-progress';
 
 export interface ToastMessage {
   id: string;
@@ -18,6 +23,12 @@ export interface ToastMessage {
 }
 
 interface AppContextType {
+  currentUser: AuthUser | null;
+  loginAsScout: () => void;
+  loginAsPlayer: (playerId?: string) => void;
+  loginCustom: (email: string, role: UserRole) => void;
+  logout: () => void;
+  switchPortal: () => void;
   activeTab: ScreenTab;
   setActiveTab: (tab: ScreenTab) => void;
   selectedPlayerId: string;
@@ -47,7 +58,23 @@ interface AppContextType {
 const AppContext = createContext<AppContextType | undefined>(undefined);
 
 export const AppProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
-  const [activeTab, setActiveTab] = useState<ScreenTab>('dashboard');
+  // Auth state: initial null shows dedicated portal login screen
+  const [currentUser, setCurrentUser] = useState<AuthUser | null>(() => {
+    const saved = localStorage.getItem('scoutai_user');
+    if (saved) {
+      try {
+        return JSON.parse(saved);
+      } catch {
+        return null;
+      }
+    }
+    return null;
+  });
+
+  const [activeTab, setActiveTab] = useState<ScreenTab>(() => {
+    return currentUser?.role === 'PLAYER' ? 'player-portal' : 'dashboard';
+  });
+
   const [selectedPlayerId, setSelectedPlayerId] = useState<string>('p-arjun-verma');
   const [comparePlayerIds, setComparePlayerIds] = useState<string[]>(['p-arjun-verma', 'p-devendra-patel']);
   const [shortlistIds, setShortlistIds] = useState<string[]>(['p-arjun-verma', 'p-kabir-khan']);
@@ -55,6 +82,71 @@ export const AppProvider: React.FC<{ children: React.ReactNode }> = ({ children 
   const [backendStatus, setBackendStatus] = useState<BackendStatus>({ isOnline: false });
   const [toasts, setToasts] = useState<ToastMessage[]>([]);
   const [isNewPlayerModalOpen, setIsNewPlayerModalOpen] = useState<boolean>(false);
+
+  // Sync auth state to local storage
+  useEffect(() => {
+    if (currentUser) {
+      localStorage.setItem('scoutai_user', JSON.stringify(currentUser));
+    } else {
+      localStorage.removeItem('scoutai_user');
+    }
+  }, [currentUser]);
+
+  const loginAsScout = () => {
+    const scoutUser: AuthUser = {
+      id: 'scout-1',
+      name: 'Vikram Rathour',
+      email: 'scout@scoutai.com',
+      role: 'SCOUT',
+      title: 'Chief Talent Scout',
+      organization: 'National Cricket Academy',
+      avatarUrl: 'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=150',
+    };
+    setCurrentUser(scoutUser);
+    setActiveTab('dashboard');
+    addToast('Welcome, Coach Vikram', 'Signed in to Scout & Coach Command Hub', 'success');
+  };
+
+  const loginAsPlayer = (playerId: string = 'p-arjun-verma') => {
+    const isKabir = playerId.includes('kabir');
+    const playerUser: AuthUser = {
+      id: playerId,
+      name: isKabir ? 'Kabir Khan' : 'Arjun Verma',
+      email: isKabir ? 'kabir@scoutai.com' : 'arjun@scoutai.com',
+      role: 'PLAYER',
+      title: isKabir ? 'Fast Bowler' : 'Top-Order Batsman',
+      organization: isKabir ? 'State Development Squad' : 'National Cricket Academy U-19',
+      playerId,
+      avatarUrl: isKabir 
+        ? 'https://images.unsplash.com/photo-1500648767791-00dcc994a43e?w=150' 
+        : 'https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=150',
+    };
+    setCurrentUser(playerUser);
+    setSelectedPlayerId(playerId);
+    setActiveTab('player-portal');
+    addToast(`Welcome, ${playerUser.name}`, 'Signed in to Player Performance Portal', 'success');
+  };
+
+  const loginCustom = (email: string, role: UserRole) => {
+    if (role === 'SCOUT') {
+      loginAsScout();
+    } else {
+      loginAsPlayer();
+    }
+  };
+
+  const logout = () => {
+    setCurrentUser(null);
+    addToast('Signed Out', 'You have been logged out of ScoutAI', 'info');
+  };
+
+  const switchPortal = () => {
+    if (currentUser?.role === 'SCOUT') {
+      loginAsPlayer();
+    } else {
+      loginAsScout();
+    }
+  };
 
   const openNewPlayerModal = () => setIsNewPlayerModalOpen(true);
   const closeNewPlayerModal = () => setIsNewPlayerModalOpen(false);
@@ -66,7 +158,7 @@ export const AppProvider: React.FC<{ children: React.ReactNode }> = ({ children 
 
   useEffect(() => {
     checkBackendStatus();
-    const interval = setInterval(checkBackendStatus, 15000); // Check every 15s
+    const interval = setInterval(checkBackendStatus, 15000);
     return () => clearInterval(interval);
   }, [isDemoMode]);
 
@@ -115,13 +207,13 @@ export const AppProvider: React.FC<{ children: React.ReactNode }> = ({ children 
 
   const navigateToPlayer = (id: string) => {
     setSelectedPlayerId(id);
-    setActiveTab('profile');
+    setActiveTab(currentUser?.role === 'PLAYER' ? 'player-portal' : 'profile');
     window.scrollTo({ top: 0, behavior: 'smooth' });
   };
 
   const navigateToAssessment = (playerId?: string) => {
     if (playerId) setSelectedPlayerId(playerId);
-    setActiveTab('assessment');
+    setActiveTab(currentUser?.role === 'PLAYER' ? 'player-upload' : 'assessment');
     window.scrollTo({ top: 0, behavior: 'smooth' });
   };
 
@@ -134,6 +226,12 @@ export const AppProvider: React.FC<{ children: React.ReactNode }> = ({ children 
   return (
     <AppContext.Provider
       value={{
+        currentUser,
+        loginAsScout,
+        loginAsPlayer,
+        loginCustom,
+        logout,
+        switchPortal,
         activeTab,
         setActiveTab,
         selectedPlayerId,

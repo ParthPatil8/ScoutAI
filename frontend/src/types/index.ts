@@ -216,3 +216,17 @@ export interface MLModel {
   license: string;
   is_active: boolean;
 }
+
+export type UserRole = 'SCOUT' | 'PLAYER';
+
+export interface AuthUser {
+  id: string;
+  name: string;
+  email: string;
+  role: UserRole;
+  title?: string;
+  organization?: string;
+  playerId?: string;
+  avatarUrl?: string;
+}
+

@@ -8,12 +8,10 @@ import {
   Search,
   LayoutGrid,
   List,
-  Filter,
   Plus,
   ArrowRight,
   GitCompare,
   Bookmark,
-  Check,
   Award,
 } from 'lucide-react';
 
@@ -45,59 +43,59 @@ export const PlayerDiscoveryScreen: React.FC<{ onOpenNewPlayerModal: () => void 
     return 0;
   });
 
-  const roles: { key: string; label: string }[] = [
-    { key: 'ALL', label: 'All Roles' },
+  const roles = [
+    { key: 'ALL', label: 'All Players' },
     { key: 'BATSMAN', label: 'Batsmen' },
-    { key: 'BOWLER', label: 'Pace & Spin Bowlers' },
+    { key: 'BOWLER', label: 'Bowlers' },
     { key: 'ALL_ROUNDER', label: 'All-Rounders' },
     { key: 'WICKET_KEEPER', label: 'Wicketkeepers' },
   ];
 
   return (
-    <div className="space-y-6">
+    <div className="space-y-6 max-w-7xl mx-auto">
       {/* Top Filter and Controls Bar */}
-      <div className="bg-scout-card border border-scout-border hud-border p-5 space-y-4">
+      <div className="bg-[#12141a] border border-white/10 rounded-2xl p-6 space-y-4">
         <div className="flex flex-col md:flex-row md:items-center justify-between gap-4">
           {/* Search bar */}
           <div className="relative flex-1 max-w-md">
-            <Search className="w-4 h-4 text-scout-muted absolute left-3.5 top-1/2 -translate-y-1/2 pointer-events-none" />
+            <Search className="w-4 h-4 text-gray-500 absolute left-3.5 top-1/2 -translate-y-1/2 pointer-events-none" />
             <input
               type="text"
               value={search}
               onChange={e => setSearch(e.target.value)}
-              placeholder="Search talent by name, academy, squad..."
-              className="w-full bg-scout-surface border border-scout-border focus:border-scout-neon focus:outline-none pl-10 pr-4 py-2.5 text-xs font-mono text-white placeholder-scout-dim"
+              placeholder="Search by player name, team, academy..."
+              className="w-full bg-[#14161f] border border-white/10 rounded-xl focus:border-scout-neon focus:outline-none pl-10 pr-4 py-2.5 text-xs font-mono text-white placeholder-gray-500"
             />
           </div>
 
           {/* Action and View Toggles */}
           <div className="flex items-center gap-3">
             {/* Sort Dropdown */}
-            <div className="flex items-center gap-2 text-xs font-mono text-scout-muted">
+            <div className="flex items-center gap-2 text-xs font-mono text-gray-400">
               <span>Sort:</span>
               <select
                 value={sortBy}
                 onChange={e => setSortBy(e.target.value as any)}
-                className="bg-scout-surface border border-scout-border focus:border-scout-neon focus:outline-none px-2.5 py-2 text-xs font-mono text-white"
+                className="bg-[#14161f] border border-white/10 rounded-lg focus:border-scout-neon focus:outline-none px-3 py-2 text-xs font-mono text-white"
               >
                 <option value="score">Technique Rating</option>
                 <option value="name">Player Name</option>
-                <option value="height">Physical Height</option>
+                <option value="height">Height</option>
               </select>
             </div>
 
             {/* Grid vs Table View */}
-            <div className="flex items-center border border-scout-border bg-scout-surface p-0.5">
+            <div className="flex items-center border border-white/10 rounded-lg bg-[#14161f] p-0.5">
               <button
                 onClick={() => setViewMode('grid')}
-                className={`p-1.5 transition-colors ${viewMode === 'grid' ? 'bg-scout-card text-scout-neon' : 'text-scout-muted hover:text-white'}`}
+                className={`p-1.5 rounded-md transition-colors ${viewMode === 'grid' ? 'bg-[#1e222d] text-scout-neon' : 'text-gray-400 hover:text-white'}`}
                 title="Grid view"
               >
                 <LayoutGrid className="w-4 h-4" />
               </button>
               <button
                 onClick={() => setViewMode('table')}
-                className={`p-1.5 transition-colors ${viewMode === 'table' ? 'bg-scout-card text-scout-neon' : 'text-scout-muted hover:text-white'}`}
+                className={`p-1.5 rounded-md transition-colors ${viewMode === 'table' ? 'bg-[#1e222d] text-scout-neon' : 'text-gray-400 hover:text-white'}`}
                 title="Table view"
               >
                 <List className="w-4 h-4" />
@@ -117,16 +115,16 @@ export const PlayerDiscoveryScreen: React.FC<{ onOpenNewPlayerModal: () => void 
         </div>
 
         {/* Role Filter Pills */}
-        <div className="flex flex-wrap items-center gap-2 pt-2 border-t border-scout-border/60">
-          <span className="text-xs font-mono text-scout-dim uppercase mr-1">Filter Role:</span>
+        <div className="flex flex-wrap items-center gap-2 pt-3 border-t border-white/5">
+          <span className="text-xs font-mono text-gray-400 mr-1">Role:</span>
           {roles.map(r => (
             <button
               key={r.key}
               onClick={() => setRoleFilter(r.key)}
-              className={`px-3 py-1.5 text-xs font-mono uppercase tracking-wider transition-all ${
+              className={`px-3 py-1.5 text-xs font-mono rounded-lg transition-all ${
                 roleFilter === r.key
-                  ? 'bg-scout-neon text-black font-bold shadow-neon-sm'
-                  : 'bg-scout-surface text-scout-muted hover:text-white border border-scout-border hover:border-scout-borderLight'
+                  ? 'bg-scout-neon text-black font-bold shadow-sm'
+                  : 'bg-[#14161f] text-gray-400 hover:text-white border border-white/5 hover:border-white/15'
               }`}
             >
               {r.label}
@@ -139,15 +137,11 @@ export const PlayerDiscoveryScreen: React.FC<{ onOpenNewPlayerModal: () => void 
       {loading ? (
         <div className="py-20 text-center space-y-3">
           <div className="w-8 h-8 border-2 border-scout-neon border-t-transparent rounded-full animate-spin mx-auto" />
-          <p className="font-mono text-xs uppercase tracking-widest text-scout-muted">
-            SYNCING PROSPECT TELEMETRY ROSTER...
-          </p>
+          <p className="font-mono text-xs text-gray-400">Loading talent roster...</p>
         </div>
       ) : sortedPlayers.length === 0 ? (
-        <div className="bg-scout-card border border-scout-border p-12 text-center space-y-3">
-          <p className="font-mono text-sm uppercase text-scout-muted">
-            NO CRICKETERS MATCHING THE CURRENT QUERY
-          </p>
+        <div className="bg-[#12141a] border border-white/10 rounded-2xl p-12 text-center space-y-3">
+          <p className="font-mono text-sm text-gray-400">No cricketers matching your search criteria.</p>
           <Button variant="outline" size="sm" onClick={() => { setSearch(''); setRoleFilter('ALL'); }}>
             Reset Filters
           </Button>
@@ -162,90 +156,84 @@ export const PlayerDiscoveryScreen: React.FC<{ onOpenNewPlayerModal: () => void 
             return (
               <div
                 key={p.id}
-                className="bg-scout-card border border-scout-border hover:border-scout-neon/50 transition-all duration-200 hud-border p-5 flex flex-col justify-between group"
+                className="bg-[#12141a] border border-white/10 hover:border-scout-neon/40 rounded-2xl p-5 flex flex-col justify-between transition-all duration-200 group"
               >
                 <div>
                   {/* Card Header */}
-                  <div className="flex items-center justify-between pb-3 border-b border-scout-border">
+                  <div className="flex items-center justify-between pb-3 border-b border-white/5">
                     <Badge role={p.primary_role} size="sm" />
                     <div className="flex items-center gap-1.5">
-                      <span className="font-mono text-xs font-black text-scout-neon">
+                      <span className="font-mono text-base font-bold text-scout-neon">
                         {p.latest_score?.toFixed(1) || '75.0'}
                       </span>
-                      <span className="text-[10px] font-mono text-scout-muted uppercase">
-                        PTS
+                      <span className="text-[10px] font-mono text-gray-400 uppercase">
+                        Score
                       </span>
                     </div>
                   </div>
 
-                  {/* Player Hero */}
-                  <div className="mt-4 flex items-center gap-4">
+                  {/* Player Basic Info */}
+                  <div className="mt-4 flex items-center gap-3.5">
                     <img
-                      src={p.avatar_url || 'https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&w=400&q=80'}
+                      src={p.avatar_url || 'https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=150'}
                       alt={p.display_name}
-                      className="w-14 h-14 object-cover border border-scout-border group-hover:border-scout-neon transition-colors"
+                      className="w-14 h-14 rounded-xl object-cover border border-white/10"
                     />
                     <div className="min-w-0 flex-1">
-                      <h3 className="font-mono text-base font-black text-white truncate uppercase group-hover:text-scout-neon transition-colors">
+                      <h3
+                        onClick={() => navigateToPlayer(p.id)}
+                        className="font-mono text-sm font-bold text-white hover:text-scout-neon cursor-pointer transition-colors truncate"
+                      >
                         {p.display_name}
                       </h3>
-                      <p className="text-xs text-scout-muted truncate">
+                      <p className="text-xs text-gray-400 truncate mt-0.5">
                         {p.current_team || 'Academy Pool'}
                       </p>
-                      <p className="text-[11px] font-mono text-scout-dim mt-0.5 truncate">
-                        {p.batting_hand.replace('_', ' ')} • {p.bowling_style !== 'NONE' ? p.bowling_style.replace(/_/g, ' ') : 'Specialist Bat'}
+                      <p className="text-[11px] font-mono text-gray-400 mt-1">
+                        {p.batting_hand.replace('_', ' ')} • {p.bowling_style.replace(/_/g, ' ')}
                       </p>
                     </div>
                   </div>
 
-                  {/* Physical Telemetry Specs */}
-                  <div className="mt-4 grid grid-cols-3 gap-2 p-2.5 bg-scout-surface border border-scout-border/60 text-center font-mono text-[11px]">
+                  {/* Attributes strip */}
+                  <div className="mt-4 grid grid-cols-3 gap-2 bg-[#0e1015] p-2.5 rounded-xl border border-white/5 text-center font-mono text-xs">
                     <div>
-                      <span className="text-scout-dim block text-[10px]">HEIGHT</span>
-                      <span className="text-white font-bold">{p.height_cm || 180} cm</span>
+                      <span className="text-[10px] text-gray-400 block">Height</span>
+                      <span className="font-bold text-white">{p.height_cm || '180'} cm</span>
+                    </div>
+                    <div className="border-x border-white/5">
+                      <span className="text-[10px] text-gray-400 block">Weight</span>
+                      <span className="font-bold text-white">{p.weight_kg || '74'} kg</span>
                     </div>
                     <div>
-                      <span className="text-scout-dim block text-[10px]">WEIGHT</span>
-                      <span className="text-white font-bold">{p.weight_kg || 74} kg</span>
-                    </div>
-                    <div>
-                      <span className="text-scout-dim block text-[10px]">ASSESSED</span>
-                      <span className="text-scout-neon font-bold">{p.assessment_count || 1}x</span>
+                      <span className="text-[10px] text-gray-400 block">Sessions</span>
+                      <span className="font-bold text-scout-neon">{p.assessment_count || 1}</span>
                     </div>
                   </div>
-
-                  {/* Scout notes quote */}
-                  {p.scout_notes && (
-                    <p className="mt-3 text-xs text-scout-muted line-clamp-2 italic font-mono">
-                      "{p.scout_notes}"
-                    </p>
-                  )}
                 </div>
 
                 {/* Card Actions */}
-                <div className="mt-5 pt-3.5 border-t border-scout-border flex items-center justify-between gap-2">
-                  <div className="flex items-center gap-1.5">
+                <div className="mt-4 pt-3 border-t border-white/5 flex items-center justify-between gap-2">
+                  <div className="flex items-center gap-1">
                     <button
                       onClick={() => toggleShortlist(p.id)}
-                      className={`p-2 border transition-colors ${
-                        shortlisted 
-                          ? 'bg-scout-neon text-black border-scout-neon shadow-neon-sm' 
-                          : 'bg-scout-surface text-scout-muted hover:text-white border-scout-border'
+                      className={`p-1.5 rounded-lg border text-xs font-mono transition-colors ${
+                        shortlisted
+                          ? 'bg-scout-neon/20 border-scout-neon text-scout-neon'
+                          : 'bg-[#14161f] border-white/10 text-gray-400 hover:text-white'
                       }`}
-                      title={shortlisted ? 'Remove from shortlist' : 'Add to scout shortlist'}
+                      title={shortlisted ? 'In Watchlist' : 'Add to Watchlist'}
                     >
                       <Bookmark className="w-3.5 h-3.5" />
                     </button>
-
                     <button
-                      onClick={() => inCompare ? null : addToCompare(p.id)}
-                      disabled={inCompare}
-                      className={`p-2 border transition-colors ${
+                      onClick={() => addToCompare(p.id)}
+                      className={`p-1.5 rounded-lg border text-xs font-mono transition-colors ${
                         inCompare
-                          ? 'bg-cyan-950/80 text-cyan-400 border-cyan-700'
-                          : 'bg-scout-surface text-scout-muted hover:text-white border-scout-border'
+                          ? 'bg-cyan-500/20 border-cyan-500 text-cyan-400'
+                          : 'bg-[#14161f] border-white/10 text-gray-400 hover:text-white'
                       }`}
-                      title={inCompare ? 'Already in comparison list' : 'Add to side-by-side compare'}
+                      title="Compare Player"
                     >
                       <GitCompare className="w-3.5 h-3.5" />
                     </button>
@@ -257,7 +245,7 @@ export const PlayerDiscoveryScreen: React.FC<{ onOpenNewPlayerModal: () => void 
                     icon={<ArrowRight className="w-3.5 h-3.5" />}
                     onClick={() => navigateToPlayer(p.id)}
                   >
-                    View Dossier
+                    Dossier
                   </Button>
                 </div>
               </div>
@@ -266,66 +254,49 @@ export const PlayerDiscoveryScreen: React.FC<{ onOpenNewPlayerModal: () => void 
         </div>
       ) : (
         /* TABLE VIEW */
-        <div className="bg-scout-card border border-scout-border hud-border overflow-x-auto">
-          <table className="w-full text-left font-mono text-xs">
-            <thead className="bg-scout-surface border-b border-scout-border text-scout-muted uppercase tracking-wider text-[11px]">
-              <tr>
-                <th className="py-3 px-4">Rating</th>
-                <th className="py-3 px-4">Cricketer</th>
-                <th className="py-3 px-4">Role</th>
-                <th className="py-3 px-4">Style & Action</th>
-                <th className="py-3 px-4">Squad / Academy</th>
-                <th className="py-3 px-4">Height/Weight</th>
-                <th className="py-3 px-4 text-right">Actions</th>
-              </tr>
-            </thead>
-            <tbody className="divide-y divide-scout-border/60">
-              {sortedPlayers.map(p => (
-                <tr key={p.id} className="hover:bg-scout-surface/50 transition-colors">
-                  <td className="py-3 px-4 font-bold text-scout-neon text-sm">
-                    {p.latest_score?.toFixed(1) || '75.0'}
-                  </td>
-                  <td className="py-3 px-4">
-                    <button
-                      onClick={() => navigateToPlayer(p.id)}
-                      className="font-bold text-white hover:text-scout-neon transition-colors text-left flex items-center gap-2.5"
-                    >
-                      <img src={p.avatar_url} alt="" className="w-7 h-7 object-cover border border-scout-border" />
-                      <span>{p.display_name}</span>
-                    </button>
-                  </td>
-                  <td className="py-3 px-4">
-                    <Badge role={p.primary_role} size="sm" />
-                  </td>
-                  <td className="py-3 px-4 text-scout-muted">
-                    {p.batting_hand.replace('_', ' ')} • {p.bowling_style !== 'NONE' ? p.bowling_style.replace(/_/g, ' ') : 'N/A'}
-                  </td>
-                  <td className="py-3 px-4 text-white truncate max-w-xs">
-                    {p.current_team || 'Academy Pool'}
-                  </td>
-                  <td className="py-3 px-4 text-scout-dim">
-                    {p.height_cm}cm / {p.weight_kg}kg
-                  </td>
-                  <td className="py-3 px-4 text-right space-x-2">
-                    <button
-                      onClick={() => addToCompare(p.id)}
-                      className="p-1.5 text-scout-muted hover:text-cyan-400 bg-scout-surface border border-scout-border"
-                      title="Add to compare"
-                    >
-                      <GitCompare className="w-3.5 h-3.5" />
-                    </button>
-                    <Button
-                      variant="primary"
-                      size="sm"
-                      onClick={() => navigateToPlayer(p.id)}
-                    >
-                      Profile
-                    </Button>
-                  </td>
+        <div className="bg-[#12141a] border border-white/10 rounded-2xl overflow-hidden">
+          <div className="overflow-x-auto">
+            <table className="w-full text-left text-xs font-mono">
+              <thead>
+                <tr className="border-b border-white/5 bg-[#0e1015] text-[11px] text-gray-400 uppercase">
+                  <th className="py-3 px-4">Player</th>
+                  <th className="py-3 px-4">Role</th>
+                  <th className="py-3 px-4">Team</th>
+                  <th className="py-3 px-4">Batting</th>
+                  <th className="py-3 px-4">Bowling</th>
+                  <th className="py-3 px-4 text-center">Score</th>
+                  <th className="py-3 px-4 text-right">Actions</th>
                 </tr>
-              ))}
-            </tbody>
-          </table>
+              </thead>
+              <tbody className="divide-y divide-white/5">
+                {sortedPlayers.map(p => (
+                  <tr key={p.id} className="hover:bg-white/5 transition-colors">
+                    <td className="py-3 px-4">
+                      <div className="flex items-center gap-3">
+                        <img src={p.avatar_url} alt="" className="w-8 h-8 rounded-lg object-cover" />
+                        <div>
+                          <p className="font-bold text-white hover:text-scout-neon cursor-pointer" onClick={() => navigateToPlayer(p.id)}>
+                            {p.display_name}
+                          </p>
+                          <p className="text-[10px] text-gray-400">{p.nationality}</p>
+                        </div>
+                      </div>
+                    </td>
+                    <td className="py-3 px-4"><Badge role={p.primary_role} size="sm" /></td>
+                    <td className="py-3 px-4 text-gray-300">{p.current_team}</td>
+                    <td className="py-3 px-4 text-gray-400">{p.batting_hand.replace('_', ' ')}</td>
+                    <td className="py-3 px-4 text-gray-400">{p.bowling_style.replace(/_/g, ' ')}</td>
+                    <td className="py-3 px-4 text-center font-bold text-scout-neon text-sm">{p.latest_score?.toFixed(1) || '80.0'}</td>
+                    <td className="py-3 px-4 text-right">
+                      <Button variant="outline" size="sm" onClick={() => navigateToPlayer(p.id)}>
+                        View
+                      </Button>
+                    </td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          </div>
         </div>
       )}
     </div>
